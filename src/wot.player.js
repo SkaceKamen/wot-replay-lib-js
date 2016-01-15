@@ -34,7 +34,7 @@ wot.player.prototype = {
 		this.onPlayerRotation = new wot.player.event();
 		this.onPlayerHealth = new wot.player.event();
 		this.onPlayerTurretRotation = new wot.player.event();
-		this.onPlayerTurretYaw = new wot.player.event();
+		this.onPlayerGunRotation = new wot.player.event();
 		this.onPlayerSpotted = new wot.player.event();
 		this.onPlayerUnspotted = new wot.player.event();
 		this.onPlayerDamaged = new wot.player.event();
@@ -82,9 +82,9 @@ wot.player.prototype = {
 						case 3:
 							this.onPlayerHealth.fire(this, packet.playerId, packet.health);
 							break;
-						case 4:
-							this.onPlayerTurretYaw.fire(this, packet.playerId, packet.gunRotation);
-							break;
+						/*case 4:
+							this.onPlayerGunRotation.fire(this, packet.playerId, packet.gunRotation);
+							break;*/
 					}
 					break;
 				case 8:
@@ -100,7 +100,7 @@ wot.player.prototype = {
 					this.onPlayerRotation.fire(this, packet.playerId, packet.hullRotation);
 					break;
 				case 25:
-					//this.onPlayerTurretYaw.fire(this, packet.playerId, packet.angle);
+					//this.onPlayerGunRotation.fire(this, packet.playerId, packet.angle);
 					break;
 			}
 		}
