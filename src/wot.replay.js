@@ -1,6 +1,5 @@
-/**
- * Represents replay.
- */
+if (typeof(wot) === "undefined")
+	wot = {};
 
 wot.replay = function() { this.construct.apply(this, arguments); }
 wot.replay.prototype = {
@@ -17,8 +16,7 @@ wot.replay.prototype = {
 	packets: null,
 	blocks: null,
 	
-	construct: function() {
-	},
+	construct: function() {},
 	
 	setBlocks: function(blocks) {
 		this.blocks = blocks;
@@ -28,15 +26,27 @@ wot.replay.prototype = {
 		this.raw = this.blocks[this.blocks.length - 1];
 	},
 	
+	getRoster: function() {
+		for(var i = 0; i < this.packets.length; i++) {
+			var packet = this.packets[i];
+			
+			if (packet.roster && packet.roster.length == 30 && packet.roster[0].length > 2) {
+				var roster = {};
+				for(var i in packet.roster)
+					roster[packet.roster[i][0]] = packet.roster[i];
+				return roster;
+			}
+		}
+		
+		return null;
+	},
+	
 	setPackets: function(packets) {
 		this.packets = packets;
 		this.frames = {};
 
 		for(var i = 0, l = this.packets.length; i < l; i++) {
-			/*var start = new Date();
-			var packet = new wot.replay.packet(this.data.packets[i]);
-			var diff = (new Date()).getTime() - start;
-			console.log("Took", diff);*/
+
 			var packet = this.packets[i];
 			var clock = Math.floor(packet.clock);
 			
@@ -48,26 +58,25 @@ wot.replay.prototype = {
 			if (packet.clock > this.maxClock)
 				this.maxClock = packet.clock;
 			
-			if (packet.type == 18) {
+			if (packet.ident == "game_state") {
 				this.battleStart = packet.clock;
 			}
 			
-			if (packet.type == 0) {
-				//var wrapped = new wot.replay.packet(packet);
-				this.mainPlayerName = packet.playerName;
-			}
-			
-			if (packet.type == 30) {
-				//var wrapped = new wot.replay.packet(packet);
-				this.mainPlayerId = packet.playerId;
-			}
 		}
 	},
 	
+	getPlayerTeam: function() {
+		return this.begin.vehicles[this.getMainPlayerId()].team;
+	},
+	
 	getMainPlayerId: function() {
+		if (!this.mainPlayerName) {
+			this.mainPlayerName = this.begin.playerName;
+		}
+		
 		if (this.mainPlayerId == null) {
 			for(var id in this.begin.vehicles) {
-				if (this.begin.vehicles[id].name == this.main)
+				if (this.begin.vehicles[id].name == this.mainPlayerName)
 					return id;
 			}
 		}
@@ -126,6 +135,17 @@ wot.replay.prototype = {
 		for(var i = 0, l = this.packets.length; i < l; i++) {
 			var packet = this.packets[i];
 			if (packet.type == type && (typeof(subtype) === "undefined" || packet.subType == subtype)) {
+				result.push(packet);
+			}
+		}
+		return result;
+	},
+	
+	getPacketsByIdent: function(ident) {
+		var result = [];
+		for(var i = 0, l = this.packets.length; i < l; i++) {
+			var packet = this.packets[i];
+			if (packet.ident == ident) {
 				result.push(packet);
 			}
 		}

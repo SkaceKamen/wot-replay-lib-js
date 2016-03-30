@@ -2,8 +2,8 @@
  * This class manages loading replay from wotreplay file
  */
 
-wot.parser = function() {}
-wot.parser.prototype = {
+wot.replay.parser = function() {}
+wot.replay.parser.prototype = {
 	DB_COUNT_OFFSET: 4,
 	DB_DATA_OFFSET: 8,
 	BF_BLOCKSIZE: 8,
@@ -12,6 +12,15 @@ wot.parser.prototype = {
 	parse: function(array_buffer) {
 		var view = new DataView(array_buffer),
 			replay = new wot.replay();
+		
+		pickle.modules['_BWp'] = {
+			'Array': function() {
+				var a = [];
+				for(var i = 0; i < arguments.length; i++)
+					a.push(arguments[i]);
+				return a;
+			}
+		}
 		
 		replay.setBlocks(this.readBlocks(view));
 		replay.begin = JSON.parse(this.ab2str(replay.begin));

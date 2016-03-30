@@ -19,6 +19,7 @@ wot.replay.packet.reader.prototype = {
 			throw new Error("Packet outside bounds!");
 	
 		var packet = new wot.replay.packet(this.data.slice(this.position, this.position + packet_size));
+		packet.bytePosition = this.position;
 		
 		this.previous = this.position;
 		this.position += packet_size;

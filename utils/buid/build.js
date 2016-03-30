@@ -3,9 +3,9 @@ var exec = require('child_process').exec,
 	dist = "../../dist",
 	result = "wot",
 	files = [
-		"wot", "wot.parser",
+		"wot", "pickle",
 		"wot.player", "wot.player.event",
-		"wot.replay", "wot.replay.packet", "wot.replay.packet.reader", "wot.replay.packet.types"
+		"wot.replay", "wot.replay.parser", "wot.replay.packet", "wot.replay.packet.reader", "wot.replay.packet.types"
 	];
 	
 for(var i in files) {
