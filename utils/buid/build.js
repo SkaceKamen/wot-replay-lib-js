@@ -3,7 +3,7 @@ var exec = require('child_process').exec,
 	dist = "../../dist",
 	result = "wot",
 	files = [
-		"wot", "pickle",
+		"wot", "pickle", "jsbfsh",
 		"wot.player", "wot.player.event",
 		"wot.replay", "wot.replay.parser", "wot.replay.packet", "wot.replay.packet.reader", "wot.replay.packet.types"
 	];
