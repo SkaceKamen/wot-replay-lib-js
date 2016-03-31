@@ -14,7 +14,7 @@ xhr.responseType = 'arraybuffer';
 
 xhr.onload = function(e) {
   //Replay parser will parse provided arraybuffer
-  var replay = new wot.parser().parse(xhr.response));
+  var replay = new wot.replay.parser().parse(xhr.response));
   //Display basic replay info
   console.log(replay.begin);
 };
